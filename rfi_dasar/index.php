@@ -1,8 +1,9 @@
 <?php
-// RFI vulnerability here
+$output = '';
 if (isset($_GET['page'])) {
+    ob_start();
     include($_GET['page']);
-    exit;
+    $output = ob_get_clean();
 }
 ?>
 
@@ -70,10 +71,10 @@ if (isset($_GET['page'])) {
 
         .output {
             background-color: #eeeeee;
-            padding: 10px;
+            padding: 15px;
             border-radius: 8px;
             font-family: monospace;
-	    font-size: 14px;
+            white-space: pre-wrap;
             border: 1px solid #ccc;
         }
 
